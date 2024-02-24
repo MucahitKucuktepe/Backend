@@ -1,18 +1,26 @@
-'use strict'
-console.log("hello FS15")
-require("./modules/module")
+"use strict";
+console.log("hello FS15");
+require("./modules/module");
 //* js uzantıya gerek yok
-require("./modules")
+require("./modules");
 
 //? single function call
-const testSingleFunction=require('./modules/module')
+const testSingleFunction = require("./modules/module");
 // testSingleFunction()
-
 
 //?multı function
 // const [test1,test2,test3]=require('./modules/module')
-const { testFunctionA, testFunctionB, testFunctionC,pi}=require('./modules/module')
-testFunctionA()
-testFunctionB()
-testFunctionC()
-console.log(pi)
+const {
+  testFunctionA,
+  testFunctionB,
+  testFunctionC,
+  pi,
+} = require("./modules/module");
+testFunctionA();
+testFunctionB();
+testFunctionC();
+console.log(pi);
+
+require("node:http");
+require('dotenv').config() //? env dosyasının içeriğini process.env ye aktarır
+console.log(process.env.PORT);
