@@ -11,16 +11,29 @@ module.exports=function(){
     console.log("this is function")
 }
 
-const testFunctionA =function(){
-        console.log("this is function A")
- }
-const testFunctionB =function(){
-        console.log("this is function B")
- }
-const testFunctionC =function(){
-        console.log("this is function C")
- }
+// module.exports.testFunctionA =function(){
+//         console.log("this is function A")
+//  }
+//  module.exports.testFunctionB =function(){
+//         console.log("this is function B")
+//  }
+//  module.exports.testFunctionC =function(){
+//         console.log("this is function C")
+//  }
 
+
+ module.exports={
+    testFunctionA :function(){
+    console.log("this is function A")
+},
+testFunctionB :function(){
+    console.log("this is function B")
+},
+testFunctionC :function(){
+    console.log("this is function C")
+},
+pi: 3.14
+ }
  //?array
 //  module.exports=[
 //     testFunctionA,
@@ -28,8 +41,8 @@ const testFunctionC =function(){
 //     testFunctionC
 //  ]
 //?OBJE
-module.exports={
-    testFunctionA:testFunctionA,
-    testFunctionB:testFunctionB,
-    testFunctionC:testFunctionC
-}
+// module.exports={
+//     testFunctionA:testFunctionA,
+//     testFunctionB:testFunctionB,
+//     testFunctionC:testFunctionC
+

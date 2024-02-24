@@ -11,7 +11,8 @@ const testSingleFunction=require('./modules/module')
 
 //?multı function
 // const [test1,test2,test3]=require('./modules/module')
-const { testFunctionA, testFunctionB, testFunctionC}=require('./modules/module')
+const { testFunctionA, testFunctionB, testFunctionC,pi}=require('./modules/module')
 testFunctionA()
 testFunctionB()
 testFunctionC()
+console.log(pi)
