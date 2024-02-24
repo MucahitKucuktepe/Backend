@@ -47,11 +47,19 @@ class Car {
 const Ford = new Car ('Ford', 'Mustang',1967)
 console.log(Ford)
 Ford.runEngine()
-/* ------------------------------------------------------- */
+/* ------------------------------------------------------- *
 //*INHERITANCE
-class Car {
+class Vehicle {
+    vehicleIsActive=false
+    constructor (vehicleType){
+        this.vehicleType=vehicleType
+    }
+}
+class Car extends Vehicle {
+    
     isRunning =false
-    constructor (brand,model,year){
+    constructor (brand,model,year,vehicleType='Car'){
+        super(vehicleType)
         this.brand=brand
         this.model=model
         this.year=year
@@ -62,7 +70,46 @@ class Car {
         return this.isRunning
     }
 }
+const Ford = new Car ('Ford', 'Mustang',1967)
+console.log(Ford)
 /* ------------------------------------------------------- */
+//?POLYMOPHIN
+
+//? Polymorphism: Miras aldığımız sınıfın özellik/methodlarını yeniden yazabilme.
+//? Override: Üst metodla aynı isim ve yapıda yeni bir metod yazma. (ezme / iptal etme / önceliğini alma)
+//? Overload: Üst metodla aynı isimde ama farklı yapıda (farklı adet/tip) yeni method oluşturma. (aynı anda ikisi de aktif) (JS desteklemez)
+class Vehicle {
+    vehicleIsActive=false
+    constructor (vehicleType){
+        this.vehicleType=vehicleType
+    }
+    getDetails(){
+        console.log('Vehicle.getDetail runned.')
+        return this.vehicleType
+    }
+}
+class Car extends Vehicle {
+    
+    isRunning =false
+    constructor (brand,model,year,vehicleType='Car'){
+        super(vehicleType)
+        this.brand=brand
+        this.model=model
+        this.year=year
+    }
+    runEngine(){
+        this.isRunning=true
+        console.log('Engin runned')
+        return this.isRunning
+    }
+    getDetails(){
+        console.log('Car.getDetail runned.')
+        return this
+    }
+}
+const Ford = new Car ('Ford', 'Mustang',1967)
+console.log(Ford.getDetails())
+
 /* ------------------------------------------------------- */
 /* ------------------------------------------------------- */
 /* ------------------------------------------------------- */
