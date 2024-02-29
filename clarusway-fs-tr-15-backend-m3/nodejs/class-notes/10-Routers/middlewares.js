@@ -14,7 +14,8 @@ const PORT = process.env.PORT || 8000;
 //? Last parameter is for next().
 //Middleware
 app.get('/',(req,res,next)=>{
-  
+
+   next()
 })
 // Route Path
 app.get('/',(req,res)=>{
