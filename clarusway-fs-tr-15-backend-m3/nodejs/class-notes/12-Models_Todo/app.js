@@ -14,11 +14,14 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 require("express-async-errors");
 
-app.all("/", (req, res) => {
-  res.send("WELCOME TO TODO API");
-});
+// app.all("/", (req, res) => {
+//   res.send("WELCOME TO TODO API");
+// });
 /* ------------------------------------------------------- */
-// continue from here...
+
+//MODELS
+
+/* ------------------------------------------------------- */
 const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = new Sequelize("sqlite:./db.sqlite3");
@@ -73,6 +76,50 @@ sequelize
   .then(() => console.log("*DB Connected"))
   .catch(() => console.log("*DB Not Connected"));
 
+/* ------------------------------------------------------- */
+
+//!****************ROUTERS************//
+
+const router = express.Router();
+
+//LIST TODOS
+router.get("/", async (req, res) => {
+  const data = await Todo.findAndCountAll();
+
+  res.status(200).send({
+    error: false,
+    result: data,
+  });
+});
+
+//! READ TODO
+router.get("/:id", async (req, res) => {
+  // const data = await Todo.findOne({ where: { id: req.params.id } });
+  const data = await Todo.findByPk(req.params.id);
+  res.status(200).send({
+    error: false,
+    result: data,
+  });
+});
+
+router.post("/", async (req, res) => {
+  const receivedData = req.body;
+
+  // const data = await Todo.create({
+  //   title: receivedData.title,
+  //   description: receivedData.description,
+  //   priorty: receivedData.priorty,
+  //   isDone: receivedData.isDone,
+  // });
+
+  const data = await Todo.create({ ...receivedData });
+  res.status(201).send({
+    error: false,
+    result: data.dataValues,
+  });
+});
+
+app.use(router);
 /* ------------------------------------------------------- */
 const errorHandler = (err, req, res, next) => {
   const errorStatusCode = res.errorStatusCode ?? 500;

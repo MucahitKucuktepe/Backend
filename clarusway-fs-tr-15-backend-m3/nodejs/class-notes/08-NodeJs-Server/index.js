@@ -2,6 +2,7 @@
 
 //? NodeJs SERVER
 require("dotenv").config();
+// console.log(process.env)
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 // console.log("welcome")
@@ -55,11 +56,11 @@ const app = http.createServer((req, res) => {
       res.end("Can not use this Method");
     }
   } else if (req.url == "/list") {
-    const obj={
-    "error":false,
-    "message":"this is list page",
-    "deneme":"deneme"
-    }
+    const obj = {
+      error: false,
+      message: "this is list page",
+      deneme: "deneme",
+    };
     res.end(JSON.stringify(obj));
   } else if (req.url == "/test") {
     res.end("<h1>This is TEST Page</h1> ");
