@@ -69,8 +69,8 @@ module.exports = {
 //       required: [true, 'error message'],
 //       enum : [[1,2,3], 'error message'], // belirli bir pattern e göre veri girişi
 //       validate: [function(data){return true}, 'error message'], // veriyi fonksiyonla doğrulama
-//       get: function(data){return true}, // veriyi çağırırken çalışacak fonksiyon
-//       set:function(data){return true}   // veriyi kaydederken çalışacak fonksiyon
+//       get: function(data){return data}, // veriyi çağırırken çalışacak fonksiyon
+//       set:function(data){return data}   // veriyi kaydederken çalışacak fonksiyon
 
 //     },
 //   },

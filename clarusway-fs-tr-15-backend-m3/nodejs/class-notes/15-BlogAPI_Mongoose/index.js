@@ -1,37 +1,30 @@
-"use strict";
-
+"use strict"
 /*
-
-BLOG API WITH MONGOOSE 
-
+    BLOG API with Mongoose
 */
-
-//* npm i express doteenv express express-async-errors
-//* npm i mongoose
-
-const express = require("express");
-const app = express();
-
-require("dotenv").config();
-const PORT = process.env.PORT;
-const HOST = process.env.HOST;
-
-//!DB CONNECTİON
-require('./src/dbConnection')
-
-app.use(express.json); // yukarıda kalmalı
+/*
+    $ npm i express dotenv express-async-errors
+    $ npm i mongoose
+*/
+const express=require("express")
+const app=express()
 
 
+app.use(express.json()) // yukarıda  kalsın
 
+require('dotenv').config()
+const PORT=process.env.PORT
+const HOST=process.env.HOST
 
+/* DB connection  */
+require('./src/dbConnection') // dotenv çalıştıktan sonra 
 
+app.all('/',(req,res)=>{
+    res.send('WELCOME BLOG API PROJECT')
+})
 
+app.use('/blog',require("./src/routes/blog.route"))
 
-app.all("/", (req, res) => {
-  res.send("WELCOME BLOG API PROJECT");
-});
+app.use(require('./src/errorHandler')) // aşağıda kalsın
 
-app.use(require("./src/errorHandler"));
-app.listen(PORT, () =>
-  console.log(`Server Running on  http://${HOST}:${PORT}`)
-);
+app.listen(PORT,()=> console.log(` Server Running on http://${HOST}:${PORT}`))
