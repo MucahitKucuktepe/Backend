@@ -10,6 +10,6 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const MONGODB = process.env.MONGODB;
 mongoose
-  .connect(process.env.MONGODB)
+  .connect(MONGODB)
   .then(() => console.log("DB Connected"))
   .catch((err) => console.log("DB Not Connected"));

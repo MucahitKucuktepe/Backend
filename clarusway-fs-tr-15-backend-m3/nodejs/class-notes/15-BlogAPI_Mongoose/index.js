@@ -11,6 +11,11 @@ BLOG API WITH MONGOOSE
 
 const express = require("express");
 const app = express();
+
+require("dotenv").config();
+const PORT = process.env.PORT;
+const HOST = process.env.HOST;
+
 //!DB CONNECTİON
 require('./src/dbConnection')
 
@@ -18,9 +23,7 @@ app.use(express.json); // yukarıda kalmalı
 
 
 
-require("dotenv").config();
-const PORT = process.env.PORT;
-const HOST = process.env.HOST;
+
 
 
 
