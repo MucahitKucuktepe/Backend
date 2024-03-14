@@ -38,6 +38,10 @@ app.use(
 app.use(require("./src/middlewares/userControl"));
 
 /* ------------------------------------------------------- */
+//FİLTER SEARCH SORT,PAGE
+app.use(require("./src/middlewares/findSearchSortPage"));
+
+/* ------------------------------------------------------- */
 app.all("/", (req, res) => {
   if (req.isLogin) {
     res.send({
