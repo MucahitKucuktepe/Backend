@@ -12,10 +12,40 @@ const express = require('express')
 const app = express()
 
 /* ------------------------------------------------------- */
+//Required Modules:
+// envVariables to process.env
+require('dotenv').config()
+const PORT = process.env.PORT || 8000
+
+// asyncErros to errorHandler:
+require('express-async-errors')
+/* ------------------------------------------------------- */
+// Configuration
+
+const { dbConnection } = require('./src/configs/dbConnection')
+dbConnection()
+
+/* ------------------------------------------------------- */
+//Middlewares
 
 
+// Accept JSON:
+app.use(express.json())
 
-// continue from here...
+//SessionsCookies:
+app.use(require('cookie-session')({ secret: process.env.SECRET_KEY }))
+
+//res.getModelList()
+app.use(require('./src/middlewares/findSearchSortPage'))
+
+/* ------------------------------------------------------- */
+//Routes:
+app.all('/', (req, res) => {
+    res.send({
+        error: false,
+        message: 'Welcome to PERSONNEL API',
+    })
+})
 
 
 
