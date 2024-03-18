@@ -30,6 +30,7 @@ app.use(
   session({
     secret: process.env.SECRET_KEY, //şifreleme anahtarı
     // maxAge:1000 * 60 * 60 * 24 * 3 //miliseconds //3 days
+    
   })
 );
 
