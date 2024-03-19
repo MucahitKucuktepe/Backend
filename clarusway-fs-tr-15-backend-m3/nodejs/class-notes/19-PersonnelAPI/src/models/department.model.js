@@ -1,5 +1,4 @@
 "use strict";
-const { Schema } = require("mongoose");
 /* -------------------------------------------------------
     EXPRESS - Personnel API
 ------------------------------------------------------- */
@@ -18,5 +17,5 @@ const DepartmentSchema = new mongoose.Schema(
   { collection: "departments", timestamps: true }
 );
 
-module.exports = mongoose.model("Department", DepartmentSchema);
 /* ------------------------------------------------------- */
+module.exports = mongoose.model("Department", DepartmentSchema);
