@@ -9,6 +9,7 @@ const personnel = require('../controllers/personnel.controller')
 
 // URL: /personnels
 
+
 router.route('/')
     .get(personnel.list)
     .post(personnel.create)
