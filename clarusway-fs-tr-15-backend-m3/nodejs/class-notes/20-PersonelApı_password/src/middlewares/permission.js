@@ -22,7 +22,7 @@ module.exports = {
     }
   },
 
-  isLead: (req, res, next) => {
+  isAdminOrLead: (req, res, next) => {
     const departmentId = req.params?.id;
     if (
       req.user &&
