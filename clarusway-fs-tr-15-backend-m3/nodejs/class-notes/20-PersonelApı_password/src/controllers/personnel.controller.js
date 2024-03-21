@@ -47,6 +47,10 @@ module.exports = {
   update: async (req, res) => {
     // isLead Control:
     const isLead = req.body?.isLead || false;
+    if(!req.user.isAdmin){
+      req.body.isAdmin = false
+      delete req.body.salary
+  }
 
     //* personelId yi kullanarak departmentId ye eriştim
     if (isLead) {
