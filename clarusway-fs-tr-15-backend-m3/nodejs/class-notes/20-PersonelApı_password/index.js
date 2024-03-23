@@ -40,6 +40,7 @@ app.use(morgan('IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | 
 /* ------------------------------------------------------- */
 
 // //! Write to log file
+// $ npm i morgan
 // const morgan = require("morgan");
 // const fs= require('node:fs')
 // app.use(morgan('combined', {
@@ -56,6 +57,43 @@ app.use(morgan('IP=:remote-addr | TIME=:date[clf] | METHOD=:method | URL=:url | 
 //   stream: fs.createWriteStream(`./logs/${today}.log`, {flags:'a+'})
 // }))
 
+/* ------------------------------------------------------- */
+//*DOCUMENTATION
+// $ npm i swagger-autogen
+// $ npm i swagger-ui-express
+// $ npm i redoc-express
+// https://swagger-autogen.github.io/docs/
+
+//? JSON
+
+app.use("/documents/json", (req, res) => {
+  res.sendFile("swagger.json", { root: "." });
+});
+
+//! hocam bu da çalışıyor
+//! app.use('/documents/json', express.static('./swagger.json'))
+
+//? SWAGGER
+const swaggerJson = require("./swagger.json");
+const swaggerUi = require("swagger-ui-express");
+
+app.use(
+  "/documents/swagger",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerJson, {
+    swaggerOptions: { persistAuthorization: true },
+  })
+);
+
+//? REDOC:
+const redoc = require("redoc-express");
+app.use(
+  "/documents/redoc",
+  redoc({
+    title: "PersonnelAPI",
+    specUrl: "/documents/json",
+  })
+);
 /* ------------------------------------------------------- */
 // Middlewares:
 
@@ -94,11 +132,22 @@ app.use(require("./src/middlewares/findSearchSortPage"));
 app.use(require("./src/middlewares/authentication"));
 /* ------------------------------------------------------- */
 // Routes:
+// HomePath:
 app.all("/", (req, res) => {
   res.send({
     error: false,
     message: "Welcome to PERSONNEL API",
+    // session: req.session,
+    // isLogin: req.isLogin,
     user: req.user,
+    api: {
+      documents: {
+        swagger: "http://127.0.0.1:8000/documents/swagger",
+        redoc: "http://127.0.0.1:8000/documents/redoc",
+        json: "http://127.0.0.1:8000/documents/json",
+      },
+      contact: "contact@clarusway.com",
+    },
   });
 });
 

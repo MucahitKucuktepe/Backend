@@ -1,10 +1,9 @@
-"use strict"
+"use strict";
 /* -------------------------------------------------------
     EXPRESS - Personnel API
 ------------------------------------------------------- */
-const router = require('express').Router()
+const router = require("express").Router();
 /* ------------------------------------------------------- */
-
 
 // {
 //     "username": "testF0",
@@ -13,13 +12,13 @@ const router = require('express').Router()
 /* ------------------------------------------------------- */
 /* ------------------------------------------------------- */
 
-const auth = require('../controllers/auth.controller')
+const auth = require("../controllers/auth.controller");
 
 // URL: /auth
 
 // Login/logout:
-router.post('/login', auth.login)
-router.all('/logout', auth.logout)
-
+router.post("/login", auth.login);
+// router.all('/logout', auth.logout) // swagger .all metodunu desteklemez
+router.get("/logout", auth.logout);
 /* ------------------------------------------------------- */
-module.exports = router
+module.exports = router;
