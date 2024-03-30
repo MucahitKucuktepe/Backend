@@ -6,20 +6,20 @@ const router = require('express').Router()
 /* ------------------------------------------------------- */
 // routes/user:
 
-const user = require('../controllers/user')
 const permissions = require('../middlewares/permissions')
+const user = require('../controllers/user')
 
 // URL: /users
 
 router.route('/')
-    .get( user.list) // permissions.isAdmin,
-    .post(user.create) // AllowAny
+    .get(permissions.isAdmin, user.list)
+    .post(permissions.isStaffOrisAdmin, user.create)
 
 router.route('/:id')
     .get(permissions.isLogin, user.read)
     .put(permissions.isLogin, user.update)
-    .patch(permissions.isLogin, user.update)
-    .delete( user.delete) // permissions.isAdmin
+    .patch(permissions.isLogin,user.update)
+    .delete(permissions.isStaffOrisAdmin, user.delete)
 
 /* ------------------------------------------------------- */
 module.exports = router

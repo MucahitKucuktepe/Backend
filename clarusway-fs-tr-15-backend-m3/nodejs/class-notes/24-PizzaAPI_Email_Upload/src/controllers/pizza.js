@@ -1,15 +1,14 @@
-"use strict"
+"use strict";
 /* -------------------------------------------------------
     NODEJS EXPRESS | CLARUSWAY FullStack Team
 ------------------------------------------------------- */
 // Pizza Controller:
 
-const Pizza = require('../models/pizza')
+const Pizza = require("../models/pizza");
 
 module.exports = {
-
-    list: async (req, res) => {
-        /*
+  list: async (req, res) => {
+    /*
             #swagger.tags = ["Pizzas"]
             #swagger.summary = "List Pizzas"
             #swagger.description = `
@@ -23,71 +22,97 @@ module.exports = {
             `
         */
 
-        const data = await res.getModelList(Pizza, {},'toppingIds')
+    const data = await res.getModelList(Pizza, {}, "toppingIds");
 
-        res.status(200).send({
-            error: false,
-            details: await res.getModelListDetails(Pizza),
-            data
-        })
-    },
+    res.status(200).send({
+      error: false,
+      details: await res.getModelListDetails(Pizza),
+      data,
+    });
+  },
 
-    // CRUD:
+  // CRUD:
 
-    create: async (req, res) => {
-        /*
+  create: async (req, res) => {
+    /*
             #swagger.tags = ["Pizzas"]
             #swagger.summary = "Create Pizza"
         */
 
-        const data = await Pizza.create(req.body)
+    const data = await Pizza.create(req.body);
 
-        res.status(201).send({
-            error: false,
-            data
-        })
-    },
+    res.status(201).send({
+      error: false,
+      data,
+    });
+  },
 
-    read: async (req, res) => {
-        /*
+  read: async (req, res) => {
+    /*
             #swagger.tags = ["Pizzas"]
             #swagger.summary = "Get Single Pizza"
         */
 
-        const data = await Pizza.findOne({ _id: req.params.id })
+    const data = await Pizza.findOne({ _id: req.params.id });
 
-        res.status(200).send({
-            error: false,
-            data
-        })
-    },
+    res.status(200).send({
+      error: false,
+      data,
+    });
+  },
 
-    update: async (req, res) => {
-        /*
+  update: async (req, res) => {
+    /*
             #swagger.tags = ["Pizzas"]
             #swagger.summary = "Update Pizza"
         */
+    // console.log(req.file) // upload.single()
+    // console.log(req.files) // upload.array() || upload.any()
+    /*
+            {
+                fieldname: 'images',
+                originalname: 'papagan.jpeg',
+                encoding: '7bit',
+                mimetype: 'image/jpeg',
+                destination: './uploads',
+                filename: '1711659209665-papagan.jpeg',
+                path: 'uploads/1711659209665-papagan.jpeg',
+                size: 7270
+            }
+        */
+ // Mevcut pizza resimlerini getir:
+ const pizza = await Pizza.findOne({ _id: req.params.id }, { _id: 0, images: 1 })
+ // pizza.images
+ 
+ for (let file of req.files) {
+     // Mevcut pizza resimlerine ekle:
+     // pizza.images.push(file.filename)
+     pizza.images.push('/uploads/' + file.filename)
+ }
+ // Pizza resimlerini req.body'ye aktar:
+ req.body.images = pizza.images
+    const data = await Pizza.updateOne({ _id: req.params.id }, req.body, {
+      runValidators: true,
+    });
 
-        const data = await Pizza.updateOne({ _id: req.params.id }, req.body, { runValidators: true })
+    res.status(202).send({
+      error: false,
+      data,
+      new: await Pizza.findOne({ _id: req.params.id }),
+    });
+  },
 
-        res.status(202).send({
-            error: false,
-            data,
-            new: await Pizza.findOne({ _id: req.params.id })
-        })
-    },
-
-    delete: async (req, res) => {
-        /*
+  delete: async (req, res) => {
+    /*
             #swagger.tags = ["Pizzas"]
             #swagger.summary = "Delete Pizza"
         */
 
-        const data = await Pizza.deleteOne({ _id: req.params.id })
+    const data = await Pizza.deleteOne({ _id: req.params.id });
 
-        res.status(data.deletedCount ? 204 : 404).send({
-            error: !data.deletedCount,
-            data
-        })
-    }
-}
+    res.status(data.deletedCount ? 204 : 404).send({
+      error: !data.deletedCount,
+      data,
+    });
+  },
+};

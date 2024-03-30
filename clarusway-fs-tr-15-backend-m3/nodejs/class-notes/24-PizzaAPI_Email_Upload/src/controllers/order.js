@@ -5,6 +5,7 @@
 // Order Controller:
 
 const Order = require("../models/order");
+const sendMail = require("../helpers/sendMail");
 
 module.exports = {
   list: async (req, res) => {
@@ -52,6 +53,17 @@ module.exports = {
       req.body.price = pizzaData.price;
     }
     const data = await Order.create(req.body);
+    //* sendMail
+
+    sendMail(
+      data.email, //to
+      "welcome", //subject
+      `
+            <h1>Welcome ${data.username} </h1>
+            <p>Welcome to our system</p>
+            
+            ` //message
+    );
 
     res.status(201).send({
       error: false,

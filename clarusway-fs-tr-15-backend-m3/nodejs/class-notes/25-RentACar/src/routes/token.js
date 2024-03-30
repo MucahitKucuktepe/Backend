@@ -4,22 +4,25 @@
 ------------------------------------------------------- */
 const router = require('express').Router()
 /* ------------------------------------------------------- */
-// routes/user:
+// routes/token:
 
-const user = require('../controllers/user')
-const permissions = require('../middlewares/permissions')
+const token = require('../controllers/token')
 
-// URL: /users
+// URL: /tokens
+
+const { isAdmin } = require('../middlewares/permissions')
+
+router.use(isAdmin)
 
 router.route('/')
-    .get( user.list) // permissions.isAdmin,
-    .post(user.create) // AllowAny
+    .get(token.list)
+    .post(token.create)
 
 router.route('/:id')
-    .get(permissions.isLogin, user.read)
-    .put(permissions.isLogin, user.update)
-    .patch(permissions.isLogin, user.update)
-    .delete( user.delete) // permissions.isAdmin
+    .get(token.read)
+    .put(token.update)
+    .patch(token.update)
+    .delete(token.delete)
 
 /* ------------------------------------------------------- */
 module.exports = router
