@@ -18,7 +18,8 @@ const { mongoose } = require("../configs/dbConnection");
     "model": "Megane",
     "year": 2022,
     "isAutomatic": false,
-    "pricePerDay": 199.99
+    "pricePerDay": 199.99,
+    "isAvailable":false
 }
 {
     "plateNumber": "34ABC345",
@@ -27,7 +28,7 @@ const { mongoose } = require("../configs/dbConnection");
     "year": 2021,
     "isAutomatic": false,
     "pricePerDay": 189.99,
-    "isPublish": false
+     "isAvailable":false
 }
 /* ------------------------------------------------------- */
 // Car Model:
@@ -69,7 +70,7 @@ const CarSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    isAvaliable:{
+    isAvailable:{
         type:Boolean,
         default:true
     },
@@ -78,7 +79,7 @@ const CarSchema = new mongoose.Schema(
         ref:'User',
         required:true
     },
-    uptatedId:{
+    updatedId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required:true

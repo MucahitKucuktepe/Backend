@@ -46,7 +46,7 @@ const ReservationSchema= new mongoose.Schema({
         ref:'User',
         required:true
     },
-    uptatedId:{
+    updatedId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required:true

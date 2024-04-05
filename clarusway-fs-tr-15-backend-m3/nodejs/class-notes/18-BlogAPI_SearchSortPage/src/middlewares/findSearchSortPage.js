@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
   // console.log(search);
   // { title: 'test', content: 'test' } -> { title: { $regex: 'test' }, content: { $regex: 'test' } }
   for (let key in search) {
-    search[key] = { $regex: search[key], $options: "i" };
+    search[key] = { $regex: search[key], $options: "i" }; // i: insensitive büyük harf küçük harf duyarsız oldu.
   }
 
   // console.log(search);
@@ -34,6 +34,7 @@ module.exports = (req, res, next) => {
   const sort = req.query?.sort || {};
   // console.log(sort);
   // const data = await BlogPost.find({ published: true });
+  // 1:A-Z  -1:Z-A artık deprecated oldu
 
   /* LIMIT*/
   // URL?page=3&limit=10
@@ -55,6 +56,7 @@ module.exports = (req, res, next) => {
   // .sort(sort)
   // .skip(skip)
   // .limit(limit);
+  // find içine obje şeklinde veri yazdığımızda kendisi filtreleme yapıyor
   res.getModelList = async function (Model,populate=null) {
     return await Model.find({ ...filter, ...search })
       .sort(sort)

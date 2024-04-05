@@ -5,6 +5,7 @@
 // Car Controller:
 
 const Car = require("../models/car");
+const Reservation = require("../models/reservation");
 
 module.exports = {
   list: async (req, res) => {
@@ -22,11 +23,45 @@ module.exports = {
             `
         */
 
-    const data = await res.getModelList(Car);
+    // Musait olmayan araçları listeleme:
+    let customFilter = { isAvailable: true };
+
+    /* TARIHE GÖRE LİSTELE */
+
+    // List by dateFilter:
+    // URL?startDate=2024-01-01&endDate=2024-01-10
+    const { startDate: getStartDate, endDate: getEndDate } = req.query;
+
+    if (getStartDate && getEndDate) {
+      // Belirtilen tarihlerde reserve edilmiş araçları getir:
+      const reservedCars = await Reservation.find(
+        {
+          $nor: [
+            { startDate: { $gt: getEndDate } }, // gt: >
+            { endDate: { $lt: getStartDate } }, // lt: <
+          ],
+        },
+        { _id: 0, carId: 1 }
+      ).distinct("carId");
+      console.log(reservedCars);
+      // Filter objesine NotIN (nin) ekle:
+      customFilter._id = { $nin: reservedCars };
+    } else {
+      req.errorStatusCode = 401;
+      throw new Error("startDate and endDate queries are required.");
+    }
+
+    /* TARIHE GÖRE LİSTELE */
+
+    // const data = await res.getModelList(Car, { _id: { $nin: ['carid12345667', 'carid12345667']} } )
+    const data = await res.getModelList(Car, customFilter, [
+      { path: "createdId", select: "username" },
+      { path: "updatedId", select: "username" },
+    ]);
 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Car),
+      details: await res.getModelListDetails(Car, customFilter),
       data,
     });
   },
@@ -44,6 +79,10 @@ module.exports = {
             }
         */
 
+    // createdId ve updatedId verisini req.user'dan al:
+    req.body.createdId = req.user._id;
+    req.body.updatedId = req.user._id;
+
     const data = await Car.create(req.body);
 
     res.status(201).send({
@@ -58,15 +97,10 @@ module.exports = {
             #swagger.summary = "Get Single Car"
         */
 
-    //? Yetkisiz kullanıcının başka bir kullanıcıyı yönetmesini engelle (sadece kendi verileri):
-    // if (!req.Car.isAdmin) {
-    //     req.params.id = req.Car.id
-    // }
-    // const data = await Car.findOne({ _id: req.params.id })
-
-    //? Yetkisiz kullanıcının başka bir kullanıcıyı yönetmesini engelle (sadece kendi verileri):
-    const id = req.Car.isAdmin ? req.params.id : req.Car.id;
-    const data = await Car.findOne({ _id: id });
+    const data = await Car.findOne({ _id: req.params.id }).populate([
+      { path: "createdId", select: "username" },
+      { path: "updatedId", select: "username" },
+    ]);
 
     res.status(200).send({
       error: false,
@@ -87,11 +121,12 @@ module.exports = {
             }
         */
 
-    // //? Yetkisiz kullanıcının başka bir kullanıcıyı yönetmesini engelle (sadece kendi verileri):
-    // if (!req.Car.isAdmin) req.params.id = req.Car._id;
-    // const data = await Car.updateOne({ _id: req.params.id }, req.body, {
-    //   runValidators: true,
-    // });
+    // updatedId verisini req.user'dan al:
+    req.body.updatedId = req.user._id;
+
+    const data = await Car.updateOne(customFilter, req.body, {
+      runValidators: true,
+    });
 
     res.status(202).send({
       error: false,
