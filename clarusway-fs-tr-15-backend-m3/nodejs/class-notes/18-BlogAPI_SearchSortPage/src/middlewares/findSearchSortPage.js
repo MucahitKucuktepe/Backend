@@ -44,7 +44,7 @@ module.exports = (req, res, next) => {
   // console.log('limit',limit);
   /* PAGE*/
   let page = Number(req.query?.page);
-  page = page > 0 ? page - 1 : 0; // Backedn de sayfa sayısı her zaman page-1 olarak hesaplanmalı
+  page = page > 0 ? page - 1 : 0; // Backend de sayfa sayısı her zaman page-1 olarak hesaplanmalı
   // console.log('page', page)
   /* SKİP*/
   let skip = Number(req.query?.skip);
@@ -57,11 +57,12 @@ module.exports = (req, res, next) => {
   // .skip(skip)
   // .limit(limit);
   // find içine obje şeklinde veri yazdığımızda kendisi filtreleme yapıyor
-  res.getModelList = async function (Model,populate=null) {
+  res.getModelList = async function (Model, populate = null) {
     return await Model.find({ ...filter, ...search })
       .sort(sort)
       .skip(skip)
-      .limit(limit).populate(populate);
+      .limit(limit)
+      .populate(populate);
   };
   res.getModelListDetails = async (Model) => {
     const data = await Model.find({ ...filter, ...search });
